@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Radyal Labs Test</title>
+    <link rel="shortcut icon" href="images/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="css/pin_clusterer.css" rel="stylesheet" />
+    <!--Bing Maps API-->
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+    <!--Database Parse API-->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+<body>
+    <!--Menu-->
+    <div class="row" style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <div class="col-sm-4">
+            <a href="index.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Input Data</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-primary btn-block active" role="button" style="margin:1%">Maps</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="showmaps.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Clustering Pins</a>
+        </div>
+    </div>
+    <!--End Menu-->
+
+    <!--Show Maps-->
+    <div style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <div id="myMap" style="position:relative; width:100%; height:500px;"></div>
+    </div>
+    <!--End Show Maps-->
+
+    <script src="js/pin_clusterer.js"></script>
+    <script type="text/javascript">
+        //Bing Maps API Key
+        var credentials = 'AmGQP-2m2GC7mtHO2RI833JxoFAyIYHhyk6Mu6oNarFUXvSUrAeZqc9RUl7tuDrd';
+        //Show Map
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), { credentials: credentials });
+
+        $(document).ready(function () {
+            //Load data from database then show the location to map
+            Parse.initialize("RpUh8416mobgtd6xwLgtBotsGOJ0X4qBt58C8PKU", "puUzilb7STqGGB4riE8dTSAH8FmWtrcjHW0PtBIf");
+
+            var ProjectData = Parse.Object.extend("ProjectData");
+            var query = new Parse.Query(ProjectData);
+            query.notEqualTo("address", "");
+            query.find({
+                success: function (data) {                    
+                    for (var i = 0; i < data.length; i++) {                       
+                        var pinLayer = new Microsoft.Maps.EntityCollection();
+                        var position = new Microsoft.Maps.Location(data[i].get('latitude'), data[i].get('longitude'));
+                        var pin = new Microsoft.Maps.Pushpin(position);
+                        pinLayer.push(pin);
+                        map.entities.push(pinLayer);                        
+                                               
+                        var bestview = Microsoft.Maps.LocationRect.fromLocations(position);
+                        map.setView({ center: bestview.center, zoom: 12 });
+                    }
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+﻿[
+    {
+        "address": "Jalan Pahlawan, Bandung 40122, Indonesia",
+        "createdAt": "2016-08-04T05:29:44.227Z",
+        "latitude": "-6.89995",
+        "longitude": "107.63413",
+        "objectId": "3B1jFFMjLp",
+        "type": "36",
+        "updatedAt": "2016-08-04T05:29:44.227Z"
+    },
+	{
+        "address": "Jalan Braga, Bandung 40117, Indonesia",
+        "createdAt": "2016-08-04T11:58:42.858Z",
+        "latitude": "-6.91451",
+        "longitude": "107.60897",
+        "objectId": "42FBGZ7tFr",
+        "type": "72",
+        "updatedAt": "2016-08-04T11:58:42.858Z"
+    },
+	{
+        "address": "Jalan Setiabudhi, Bandung 40162, Indonesia",
+        "createdAt": "2016-08-04T05:28:52.185Z",
+        "latitude": "-6.86984",
+        "longitude": "107.59354",
+        "objectId": "4pjQb6fp0T",
+        "type": "72",
+        "updatedAt": "2016-08-04T05:28:52.185Z"
+    },
+	{
+        "address": "Jalan Cikutra, Bandung, Indonesia",
+        "createdAt": "2016-08-04T05:08:39.732Z",
+        "latitude": "-6.90365",
+        "longitude": "107.64398",
+        "objectId": "4zcRRMwWO7",
+        "type": "45",
+        "updatedAt": "2016-08-04T05:08:39.732Z"
+    },
+	{
+        "address": "Jalan Surapati, Bandung 40122, Indonesia",
+        "createdAt": "2016-08-04T11:59:36.194Z",
+        "latitude": "-6.89923",
+        "longitude": "107.62153",
+        "objectId": "5mO8kwqx9m",
+        "type": "36",
+        "updatedAt": "2016-08-04T11:59:36.194Z"
+    },
+	{
+        "address": "Jalan Antapani, Bandung, Indonesia",
+        "createdAt": "2016-08-04T05:24:41.596Z",
+        "latitude": "-6.90954",
+        "longitude": "107.6576",
+        "objectId": "7LWGi0F7uG",
+        "type": "72",
+        "updatedAt": "2016-08-04T05:24:41.596Z"
+    },
+	{
+        "address": "Jalan Supratman, Bandung 40114, Indonesia",
+        "createdAt": "2016-08-04T08:41:08.864Z",
+        "latitude": "-6.90711",
+        "longitude": "107.63025",
+        "objectId": "AewxcActP1",
+        "type": "45",
+        "updatedAt": "2016-08-04T08:41:08.864Z"
+    },
+	{
+        "address": "Jalan Asia Afrika, Bandung 40112, Indonesia",
+        "createdAt": "2016-08-04T12:00:01.176Z",
+        "latitude": "-6.9221",
+        "longitude": "107.6148",
+        "objectId": "FzD6KgHKCF",
+        "type": "36",
+        "updatedAt": "2016-08-04T12:00:01.176Z"
+    },
+	{
+        "address": "Jalan Taman Sari, Bandung 40132, Indonesia",
+        "createdAt": "2016-08-04T05:30:54.639Z",
+        "latitude": "-6.89033",
+        "longitude": "107.60801",
+        "objectId": "a6I3ZX3xxi",
+        "type": "72",
+        "updatedAt": "2016-08-04T05:30:54.639Z"
+    },
+	{
+        "address": "Jalan Sido Luhur, Bandung 40123, Indonesia",
+        "createdAt": "2016-08-04T05:08:09.295Z",
+        "latitude": "-6.89403",
+        "longitude": "107.63253",
+        "objectId": "a8WKdLk1Dy",
+        "type": "36",
+        "updatedAt": "2016-08-04T05:08:09.295Z"
+    },
+	{
+        "address": "Jalan Dago, Bandung 40115, Indonesia",
+        "createdAt": "2016-08-04T08:41:45.586Z",
+        "latitude": "-6.90485",
+        "longitude": "107.61067",
+        "objectId": "lLylGq0sMf",
+        "type": "72",
+        "updatedAt": "2016-08-04T08:41:45.586Z"
+    },
+	{
+        "address": "Jalan Dipati Ukur, Bandung 40132, Indonesia",
+        "createdAt": "2016-08-04T05:30:36.920Z",
+        "latitude": "-6.89027",
+        "longitude": "107.61658",
+        "objectId": "r3Jb1WmSdC",
+        "type": "36",
+        "updatedAt": "2016-08-04T05:30:36.920Z"
+    },
+	{
+        "address": "Jalan Margahayu VI, Bandung, Indonesia",
+        "createdAt": "2016-08-04T05:31:36.137Z",
+        "latitude": "-6.94938",
+        "longitude": "107.65872",
+        "objectId": "rWNYERaq8R",
+        "type": "36",
+        "updatedAt": "2016-08-04T05:31:36.137Z"
+    },
+	{
+        "address": "Jalan Cihampelas, Bandung 40131, Indonesia",
+        "createdAt": "2016-08-04T05:28:19.839Z",
+        "latitude": "-6.89745",
+        "longitude": "107.60396",
+        "objectId": "te9wZatiSK",
+        "type": "45",
+        "updatedAt": "2016-08-04T05:28:19.839Z"
+    },
+	{
+        "address": "Jalan Merdeka, Bandung 40117, Indonesia",
+        "createdAt": "2016-08-04T05:30:13.085Z",
+        "latitude": "-6.91115",
+        "longitude": "107.61056",
+        "objectId": "wmkm3hKdrf",
+        "type": "45",
+        "updatedAt": "2016-08-04T05:30:13.085Z"
+    }
+
+]
+

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Radyal Labs Test</title>
+    <link rel="shortcut icon" href="images/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="css/pin_clusterer.css" rel="stylesheet" />
+    <!--Bing Maps API-->
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+    <!--Database Parse API-->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+<body>
+    <!--Menu-->
+    <div class="row" style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <div class="col-sm-4">
+            <a href="index.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Input Data</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="maps.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Maps</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="#" class="btn btn-primary btn-block active" role="button" style="margin:1%">Clustering Pins</a>
+        </div>
+    </div>
+    <!--End Menu-->
+
+    <!--Show Maps-->
+    <div style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <div id="myMap" style="position:relative; width:100%; height:500px;"></div>
+    </div>
+    <!--End Show Maps-->
+
+    <script src="js/pin_clusterer.js"></script>
+    <script type="text/javascript">   
+        //Load Data    
+        var uri = 'data/data.json';
+        //Bing Maps API Key
+        var credentials = 'AmGQP-2m2GC7mtHO2RI833JxoFAyIYHhyk6Mu6oNarFUXvSUrAeZqc9RUl7tuDrd';
+        //Show Map
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), { credentials: credentials });
+
+        var pinInfobox;
+
+        $(document).ready(function () {
+            //Load data then show to map
+            $.getJSON(uri)
+                .done(function (data) {                   
+                    pinInfobox = new Microsoft.Maps.Infobox(new Microsoft.Maps.Location(data[0].latitude, data[0].longitude), { visible: false }),			    
+				    pinClusterer = new PinClusterer(map, {
+				        onClusterToMap: function (pushpin, cluster) {
+				            Microsoft.Maps.Events.addHandler(pushpin, 'mouseover', function () {
+				                displayInfoBox(pushpin, cluster);
+				            });
+				            Microsoft.Maps.Events.addHandler(pushpin, 'mouseout', hideInfoBox);
+				        }
+				    });
+                        map.entities.push(pinInfobox);
+                        map.setView({ center: new Microsoft.Maps.Location(data[0].latitude, data[0].longitude), zoom: 12 });
+                        pinClusterer.cluster(data);
+                        var displayInfoBox = function displayInfoBox(pushpin, cluster) {
+                            pinInfobox.setLocation(pushpin.getLocation());
+                            pinInfobox.setOptions({
+                                title: 'Pushpin',
+                                description: 'This pin is within a cluster of ' + cluster.locations.length + ' pins.',
+                                visible: true
+                            });
+                        };
+                        var hideInfoBox = function hideInfoBox() {
+                            pinInfobox.setOptions({ visible: false });
+                        };
+
+                });
+        });
+    </script>
+</body>
+</html>

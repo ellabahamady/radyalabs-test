@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Radyal Labs Test</title>
+    <link rel="shortcut icon" href="images/icon.png">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- jQuery library -->
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.5.1.js" type="text/javascript"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.10/themes/redmond/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="css/style.css" />
+    <!--Bing Maps API-->
+    <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
+    <!--Database Parse API-->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-latest.js"></script>
+</head>
+<body>
+    <!--Menu-->
+    <div class="row" style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <div class="col-sm-4">           
+            <a href="#" class="btn btn-primary btn-block active" role="button" style="margin:1%">Input Data</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="maps.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Maps</a>
+        </div>
+        <div class="col-sm-4">
+            <a href="showmaps.html" class="btn btn-primary btn-block" role="button" style="margin:1%">Clustering Pins</a>
+        </div>
+    </div>
+    <!--End Menu-->
+
+    <div class="row" style="width:90%; margin-left:5%; margin-right:5%; margin-top:2%">
+        <!--Form Input Data-->
+        <div class="col-sm-6">
+            <h4>Input Data</h4>
+
+            <form role="form">
+                <div class="form-group">
+                    <label>Type</label>
+                    <select class="form-control" id="type">
+                        <option value="36">36</option>
+                        <option value="45">45</option>
+                        <option value="72">72</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="Enter Address" required>
+                </div>
+                <div class="form-group">
+                    <label>Latitude</label>
+                    <input type="text" class="form-control" id="latitude" placeholder="Latitude" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Longitude</label>
+                    <input type="text" class="form-control" id="longitude" placeholder="Longitude" readonly>
+                </div>                
+                <input type="button" class="btn btn-primary btn-block" value="Submit" onclick="saveData()" />
+            </form>
+        </div>
+        <!-- End Form Input Data-->
+
+        <!--Show Maps-->
+        <div class="col-sm-6">
+            <div id="myMap" style="position:relative; width:100%; height:400px; margin:2%"></div>
+        </div>
+        <!--End Show Maps-->
+    </div>
+
+    <script type="text/javascript">
+        //Bing Maps API Key
+        var credentials = 'AmGQP-2m2GC7mtHO2RI833JxoFAyIYHhyk6Mu6oNarFUXvSUrAeZqc9RUl7tuDrd';
+        //Show Map
+        var map = new Microsoft.Maps.Map(document.getElementById('myMap'), { credentials: credentials }); 
+
+        $(document).ready(function () {
+            //Autocomplete Address
+            $("#address").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "http://dev.virtualearth.net/REST/v1/Locations",
+                        dataType: "jsonp",
+                        data: {
+                            key: credentials,
+                            q: request.term
+                        },
+                        jsonp: "jsonp",
+                        success: function (data) {
+                            var result = data.resourceSets[0];
+                            if (result) {
+                                if (result.estimatedTotal > 0) {
+                                    response($.map(result.resources, function (item) {
+                                        return {
+                                            data: item,
+                                            label: item.name + ' (' + item.address.adminDistrict + ')',
+                                            value: item.name
+                                        }
+                                    }));
+                                }
+                            }
+                        }
+                    });
+                },
+                minLength: 1,
+                change: function (event, ui) {
+                    if (!ui.item)
+                        $("#address").val('');
+                },
+                select: function (event, ui) {
+                    displaySelectedItem(ui.item.data);
+                }
+            });
+        });
+
+        //Show latitude & longitude from address selected
+        function displaySelectedItem(item) {
+            $("#latitude").val(item.point.coordinates[0]);
+            $("#longitude").val(item.point.coordinates[1]);
+
+            var pinLayer = new Microsoft.Maps.EntityCollection();
+            var position = new Microsoft.Maps.Location(item.point.coordinates[0], item.point.coordinates[1]);
+            var pin = new Microsoft.Maps.Pushpin(position);
+            pinLayer.push(pin);
+            map.entities.push(pinLayer);
+
+            var bestview = Microsoft.Maps.LocationRect.fromLocations(position);
+            map.setView({ center: bestview.center, zoom: 15 });
+        }
+
+        //Save Data to Parse
+        function saveData() {           
+            var type = $("#type").val();
+            var address = $("#address").val(); 
+            var latitude = $("#latitude").val(); 
+            var longitude = $("#longitude").val();
+
+            if (address != "") {
+                Parse.initialize("RpUh8416mobgtd6xwLgtBotsGOJ0X4qBt58C8PKU", "puUzilb7STqGGB4riE8dTSAH8FmWtrcjHW0PtBIf");
+
+                var ProjectData = Parse.Object.extend("ProjectData");
+                var projectData = new ProjectData();
+
+                projectData.set("type", type);
+                projectData.set("address", address);
+                projectData.set("latitude", latitude);
+                projectData.set("longitude", longitude);
+
+                projectData.save(null, {
+                    success: function (projectData) {
+                        alert('Save Data Successfully');
+                        setEmptyField();
+                    },
+                    error: function (projectData, error) {
+                        alert('Save Data Failed, with error code: ' + error.message);
+                    }
+                });
+            }
+            else {             
+                alert("Please fill out address field")
+            }
+        }
+
+        //Clear Field after data saved
+        function setEmptyField() {
+            $("#type").val("36");
+            $("#address").val("");
+            $("#latitude").val("");
+            $("#longitude").val("");
+        }
+    </script>
+</body>
+</html>
